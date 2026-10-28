@@ -3,9 +3,9 @@ requires = ["setuptools>=68", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "source-code-turbo-auto-encoder-vs-rcus-bound"
-version = "0.1.0"
-description = "Add your description here"
+name = "Turbo-Autoencoder-vs.-Finite-Blocklength-Bound"
+version = "1.0.0"
+description = "Source code for paper: Learning Joint Synchronization, Channel Estimation, and Decoding: Comparison with a Finite-Blocklength Achievability Bound"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [

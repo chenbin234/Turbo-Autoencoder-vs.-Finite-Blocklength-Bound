@@ -39,17 +39,17 @@ class TurboAEConfig:
     trainable_parameters: int = 0
     epochs: int = 700
     epochs_integrate_sync: int = 500
-    num_samples: int = 500
-    batch_size: int = 500
+    num_samples: int = 5000
+    batch_size: int = 5000
     start_epoch: int = 1
     print_every: int | None = None
     save_every: int = 700
     in_channels: int = 1
     input_size: int = 64
     k: int = 64  # number of information bits
-    CRC: int = 1  # number of CRC bits, option: {0, 1, 2, 3, 6, 11, 16}
-    interleaver_type: str = "random"  # "random" or "sionna_polar"
-    candidate_list_size: int = 2  # number of candidates to keep after CRC check
+    CRC: int = 3  # number of CRC bits, option: {0, 1, 2, 3, 6, 11, 16}
+    interleaver_type: str = "sionna_polar"  # "random" or "sionna_polar"
+    candidate_list_size: int = 8  # number of candidates to keep after CRC check
     n: int = 64  # code length (complex)
     n_M: int = 0
     F: int = 30
@@ -70,10 +70,10 @@ class TurboAEConfig:
     train_dec_snr_low: float = 15.0  # dB
     train_sync_snr_high: float = 15.0  # dB
     train_sync_snr_low: float = 15.0  # dB
-    test_snr_high: float = 30  # dB
-    test_snr_low: float = 10  # dB
+    test_snr_high: float = 19  # dB
+    test_snr_low: float = 18  # dB
     test_snr_interval: float = 2.0  # dB
-    test_data_samples: int = 10_000_000  # Total test samples per SNR across all workers.
+    test_data_samples: int = 100_000  # Total test samples per SNR across all workers.
     channel: str = "block_fading"
     num_taps: int = 1  # Number of taps for the Proakis channel
     is_delay: bool = True  # Whether to include delay in the channel
@@ -86,9 +86,9 @@ class TurboAEConfig:
     alpha: float = 0.5
     beta: float = 1
     pretrained: str | None = (
-        None  # Path to the pretrained model: "./trained_models/Turbo_AutoEncoder_20241205_10_38_41/Turbo_AutoEncoder_20241205_10_38_41_epoch10.pth"
+        "./trained_models/Turbo_AutoEncoder_k64n64_CRC3_20261012_08_17_54/Turbo_AutoEncoder_20261012_08_17_54_epoch700.pth"  # Path to the pretrained model: "./trained_models/Turbo_AutoEncoder_20241205_10_38_41/Turbo_AutoEncoder_20241205_10_38_41_epoch10.pth"
     )
-    is_inference: bool = False  # Skip training entirely and only run inference on "pretrained".
+    is_inference: bool = True  # Skip training entirely and only run inference on "pretrained".
     loss_function: str = "BCE"  # "BCE", "MSE", "ProductLoss", "MaxLoss", "SmoothMaxLoss", "LogSumExpLoss", "PNormLoss", "HybridBCESoftBLERLoss", "HybridBCEProductLoss", "HybridBCEMaxLoss", "HybridBCESmoothMaxLoss", "HybridBCELogSumExpLoss", "HybridBCEPNormLoss"
     bce_epsilon: float = 1e-7  # Avoid exact 0/1 probabilities in BCELoss.
     grad_clip_norm: float = 1.0  # Prevent rare exploding gradients from poisoning weights.
