@@ -4,8 +4,8 @@
 
 Source code, trained model, and parameter settings for the paper
 
-> **Learning Joint Synchronization, Channel Estimation, and Decoding: Comparison with a Finite-Blocklength Achievability Bound**
-> Bingcheng Chen, Giuseppe Durisi, Christian Häger
+> **Learning Joint Synchronization, Channel Estimation, and Decoding: Comparison with a Finite-Blocklength Achievability Bound**<br>
+> Bingcheng Chen, Giuseppe Durisi, Christian Häger.<br>
 > Department of Electrical Engineering, Chalmers University of Technology
 
 ## Contents
@@ -141,7 +141,7 @@ is_inference: bool = True  # skip training, only evaluate `pretrained`
 The test SNR range is define as following
 
 ```python
-# test SNR range 
+# test SNR range
 test_snr_low: float = 10  # dB
 test_snr_high: float = 30  # dB
 test_snr_interval: float = 2.0  # dB
@@ -244,8 +244,8 @@ WANDB_MODE=offline python -m src.baseline.AWGN.baseline_modern_codes_awgn
 
 ### 6.3 Not included
 
-- **The RCUs achievability bound** in Fig. 4 comes from [Kislal et al. (2024)](#related-work) and is not computed here.
-- **The TurboAE AWGN curve.** The TurboAE pipeline in this repository supports the block-fading channel with delay only.
+- **The RCUs achievability bound** in Fig. 4 comes from [Kislal et al. (2024)](#related-work) and is not included here (see the author's github [repository](https://github.com/OguzKislal/FiniteBlocklengthInfoTheory_ImperfectSync)).
+- **The TurboAE AWGN curve.** The TurboAE pipeline in this repository supports the block-fading channel with delay only. For TurboAE implementation under AWGN, see my other repositories under GitHub [profile](https://github.com/chenbin234).
 
 ## 7. Citation and Acknowledgements
 

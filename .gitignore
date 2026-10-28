@@ -189,7 +189,7 @@ wandb/
 *.sif
 
 # png
-*.png
+# *.png
 # pdf
 *.pdf
 # txt
