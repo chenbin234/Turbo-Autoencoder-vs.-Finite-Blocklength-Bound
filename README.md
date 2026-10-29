@@ -104,8 +104,8 @@ wandb login
 ├── src/
 │   ├── models/
 │   │   ├── serial_turbo_autoencoder.py    # TurboAutoencoderSync: encoder, decoder, end-to-end forward pass
-│   │   └── components/										 # Components called by TurboAutoencoder
-│   ├── channel/													 # Waveform channel
+│   │   └── components/                    # Components called by TurboAutoencoder
+│   ├── channel/                           # Waveform channel
 │   ├── train/
 │   │   ├── train_turbo_ae.py              # Entry point and TurboAEConfig (all hyperparameters)
 │   │   ├── trainer.py                     # Two-stage training schedule, validation, checkpointing
@@ -114,15 +114,19 @@ wandb login
 │   │   └── inference_turboae.py           # Monte Carlo BER / BLER / delay-error evaluation
 │   ├── features/
 │   │   └── build_pytorch_dataset.py       # InfobitDataset: random information bits for evaluation
-│   └── baseline/													 # Pilot-assisted 5G baselines
-├── trained_models/
-│   └── Turbo_AutoEncoder_k64n64_CRC3_20261012_08_17_54/
-│       ├── Turbo_AutoEncoder_20261012_08_17_54_epoch700.pth  # Pretrained weights (k = n = 64, CRC-3)
-│       └── output.log                                        # Console log of the training and evaluation run
+│   └── baseline/                          # Pilot-assisted 5G baselines
+├── trained_models/                        # The three pretrained TurboAEs of Fig. 4 (see below)
+│   ├── Turbo_AutoEncoder_k64n64_CRC0_20261028_01_22_40/
+│   │   ├── Turbo_AutoEncoder_20261028_01_22_40_epoch700.pth  # TurboAE – BCE
+│   ├── Turbo_AutoEncoder_k64n64_CRC3_20261012_08_17_54/
+│   │   ├── Turbo_AutoEncoder_20261012_08_17_54_epoch700.pth  # TurboAE – BCE (CRC)
+│   └── Turbo_AutoEncoder_k64n64_finetune_LogSumExp_20261028_14_49_35/
+│       └── Turbo_AutoEncoder_20261028_14_49_35_epoch100.pth  # TurboAE – (BCE + LogSumExp loss)
 ├── pyproject.toml                         # Package metadata, dependencies, lint settings
 ├── uv.lock                                # Locked dependency versions
 └── LICENSE
 ```
+
 
 ## 4. Inference with the Pretrained Model
 
