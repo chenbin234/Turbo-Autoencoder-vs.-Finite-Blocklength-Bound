@@ -1,0 +1,305 @@
+interleaver_type: sionna_polar
+p_array_seed: 3
+p_array: tensor([ 0, 11, 21, 30, 38, 45, 51, 56, 60, 63,  1, 12, 22, 31, 39, 46, 52, 57,
+        61,  2, 13, 23, 32, 40, 47, 53, 58, 62,  3, 14, 24, 33, 41, 48, 54, 59,
+         4, 15, 25, 34, 42, 49, 55,  5, 16, 26, 35, 43, 50,  6, 17, 27, 36, 44,
+         7, 18, 28, 37,  8, 19, 29,  9, 20, 10])
+Pretrained model loaded
+TurboAutoencoderSync(
+  (encoder): Encoder(
+    (outer_encoder): CNNBlock(
+      (conv_layers): Sequential(
+        (0): Conv1d(1, 100, kernel_size=(5,), stride=(1,), padding=same)
+        (1): ELU(alpha=1.0)
+        (2): Conv1d(100, 100, kernel_size=(5,), stride=(1,), padding=same)
+        (3): ELU(alpha=1.0)
+        (4): Conv1d(100, 100, kernel_size=(5,), stride=(1,), padding=same)
+        (5): ELU(alpha=1.0)
+        (6): Conv1d(100, 100, kernel_size=(5,), stride=(1,), padding=same)
+        (7): ELU(alpha=1.0)
+        (8): Conv1d(100, 100, kernel_size=(5,), stride=(1,), padding=same)
+        (9): ELU(alpha=1.0)
+      )
+      (output_layer): Conv1d(100, 30, kernel_size=(1,), stride=(1,))
+    )
+    (pre_sign_norm): BatchNorm1d(30, eps=1e-05, momentum=0.1, affine=False, track_running_stats=True)
+    (inner_encoder): CNNBlock(
+      (conv_layers): Sequential(
+        (0): Conv1d(30, 100, kernel_size=(5,), stride=(1,), padding=same)
+        (1): ELU(alpha=1.0)
+        (2): Conv1d(100, 100, kernel_size=(5,), stride=(1,), padding=same)
+        (3): ELU(alpha=1.0)
+        (4): Conv1d(100, 100, kernel_size=(5,), stride=(1,), padding=same)
+        (5): ELU(alpha=1.0)
+        (6): Conv1d(100, 100, kernel_size=(5,), stride=(1,), padding=same)
+        (7): ELU(alpha=1.0)
+        (8): Conv1d(100, 100, kernel_size=(5,), stride=(1,), padding=same)
+        (9): ELU(alpha=1.0)
+      )
+      (output_layer): Conv1d(100, 2, kernel_size=(1,), stride=(1,))
+    )
+  )
+  (sync_block): DelayEstimator(
+    (input_projection): Sequential(
+      (0): Conv1d(2, 64, kernel_size=(1,), stride=(1,))
+      (1): BatchNorm1d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (2): GELU(approximate='none')
+    )
+    (shift_residual_conv_blocks): Sequential(
+      (0): ShiftResidualConvBlock(
+        (activation): GELU(approximate='none')
+        (shift_conv): Conv1d(192, 64, kernel_size=(5,), stride=(1,), padding=same)
+        (norm1): BatchNorm1d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (conv): Conv1d(64, 64, kernel_size=(5,), stride=(1,), padding=same)
+        (norm2): BatchNorm1d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+      (1): ShiftResidualConvBlock(
+        (activation): GELU(approximate='none')
+        (shift_conv): Conv1d(192, 64, kernel_size=(5,), stride=(1,), padding=same)
+        (norm1): BatchNorm1d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (conv): Conv1d(64, 64, kernel_size=(5,), stride=(1,), padding=same)
+        (norm2): BatchNorm1d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+      (2): ShiftResidualConvBlock(
+        (activation): GELU(approximate='none')
+        (shift_conv): Conv1d(192, 64, kernel_size=(5,), stride=(1,), padding=same)
+        (norm1): BatchNorm1d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (conv): Conv1d(64, 64, kernel_size=(5,), stride=(1,), padding=same)
+        (norm2): BatchNorm1d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+      (3): ShiftResidualConvBlock(
+        (activation): GELU(approximate='none')
+        (shift_conv): Conv1d(192, 64, kernel_size=(5,), stride=(1,), padding=same)
+        (norm1): BatchNorm1d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (conv): Conv1d(64, 64, kernel_size=(5,), stride=(1,), padding=same)
+        (norm2): BatchNorm1d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+    (attention_pool): Attention(
+      (attention_pool): Sequential(
+        (0): Conv1d(64, 64, kernel_size=(1,), stride=(1,))
+        (1): GELU(approximate='none')
+        (2): Conv1d(64, 1, kernel_size=(1,), stride=(1,))
+      )
+    )
+    (candidate_projection): Sequential(
+      (0): Linear(in_features=9, out_features=64, bias=True)
+      (1): GELU(approximate='none')
+      (2): Linear(in_features=64, out_features=64, bias=True)
+      (3): GELU(approximate='none')
+    )
+    (q_head): Linear(in_features=64, out_features=1, bias=True)
+    (candidate_e_head): Linear(in_features=64, out_features=1, bias=True)
+    (fused_eps_output): Sequential(
+      (0): Linear(in_features=97, out_features=64, bias=True)
+      (1): GELU(approximate='none')
+      (2): Linear(in_features=64, out_features=1, bias=True)
+    )
+  )
+  (decoder): Decoder(
+    (dec_input): Sequential(
+      (0): Conv1d(16, 64, kernel_size=(1,), stride=(1,))
+      (1): BatchNorm1d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (2): ELU(alpha=1.0)
+    )
+    (eq_block_list): ModuleList(
+      (0-5): 6 x EqualizerCNNBlock(
+        (cnn_block1): CNNBlock(
+          (conv_layers): Sequential(
+            (0): Conv1d(94, 100, kernel_size=(5,), stride=(1,), padding=same)
+            (1): ELU(alpha=1.0)
+            (2): Conv1d(100, 100, kernel_size=(5,), stride=(1,), padding=same)
+            (3): ELU(alpha=1.0)
+            (4): Conv1d(100, 100, kernel_size=(5,), stride=(1,), padding=same)
+            (5): ELU(alpha=1.0)
+            (6): Conv1d(100, 100, kernel_size=(5,), stride=(1,), padding=same)
+            (7): ELU(alpha=1.0)
+            (8): Conv1d(100, 100, kernel_size=(5,), stride=(1,), padding=same)
+            (9): ELU(alpha=1.0)
+          )
+          (output_layer): Conv1d(100, 30, kernel_size=(1,), stride=(1,))
+        )
+      )
+    )
+    (dec_block_list): ModuleList(
+      (0-4): 5 x DecoderCNNBlock(
+        (cnn_block1): CNNBlock(
+          (conv_layers): Sequential(
+            (0): Conv1d(30, 100, kernel_size=(5,), stride=(1,), padding=same)
+            (1): ELU(alpha=1.0)
+            (2): Conv1d(100, 100, kernel_size=(5,), stride=(1,), padding=same)
+            (3): ELU(alpha=1.0)
+            (4): Conv1d(100, 100, kernel_size=(5,), stride=(1,), padding=same)
+            (5): ELU(alpha=1.0)
+            (6): Conv1d(100, 100, kernel_size=(5,), stride=(1,), padding=same)
+            (7): ELU(alpha=1.0)
+            (8): Conv1d(100, 100, kernel_size=(5,), stride=(1,), padding=same)
+            (9): ELU(alpha=1.0)
+          )
+          (output_layer): Conv1d(100, 30, kernel_size=(1,), stride=(1,))
+        )
+        (cnn_block2): Conv1d(30, 30, kernel_size=(1,), stride=(1,), padding=same)
+      )
+    )
+    (dec_last_block): DecoderCNNLastBlock(
+      (cnn_block1): CNNBlock(
+        (conv_layers): Sequential(
+          (0): Conv1d(30, 100, kernel_size=(5,), stride=(1,), padding=same)
+          (1): ELU(alpha=1.0)
+          (2): Conv1d(100, 100, kernel_size=(5,), stride=(1,), padding=same)
+          (3): ELU(alpha=1.0)
+          (4): Conv1d(100, 100, kernel_size=(5,), stride=(1,), padding=same)
+          (5): ELU(alpha=1.0)
+          (6): Conv1d(100, 100, kernel_size=(5,), stride=(1,), padding=same)
+          (7): ELU(alpha=1.0)
+          (8): Conv1d(100, 100, kernel_size=(5,), stride=(1,), padding=same)
+          (9): ELU(alpha=1.0)
+        )
+        (output_layer): Conv1d(100, 30, kernel_size=(1,), stride=(1,))
+      )
+      (flatten): Flatten(start_dim=1, end_dim=-1)
+      (decoder_ouput): Linear(in_features=1920, out_features=64, bias=True)
+      (sigmoid): Sigmoid()
+    )
+  )
+)
+Number of total parameters:     3707936
+Number of trainable parameters: 3707936
+Starting training
+/apps/Arch/software/PyTorch/2.1.2-foss-2023a-CUDA-12.1.1/lib/python3.11/site-packages/torch/autograd/__init__.py:251: UserWarning: Grad strides do not match bucket view strides. This may indicate grad was not created according to the gradient layout contract, or that the param's strides changed since DDP was constructed.  This is not an error, but may impair performance.
+grad.sizes() = [100, 1, 5], strides() = [5, 1, 1]
+bucket_view.sizes() = [100, 1, 5], strides() = [5, 5, 1] (Triggered internally at /dev/shm/PyTorch/2.1.2/foss-2023a-CUDA-12.1.1/pytorch-v2.1.2/torch/csrc/distributed/c10d/reducer.cpp:320.)
+  Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
+Epoch 1: Initialize lowest cost to 0.058746
+
+Epoch:  1/100 | Train loss:   0.068856 | Train Sync MSE:   0.001386 | Train Sync MAE:   0.021853 | Val. loss:   0.058746 | Val. BER (15.0 dB):   0.000612 | Val. BLER (15.0 dB):   0.015600 | Val. Sync Error MSE (15.0 dB):   0.001781 | Val. Sync Error MAE (15.0 dB):   0.021687 | Batch size: 5000 | Learning rate: 3.000000e-05 | Sync learning rate: 1.000000e-06 | Stuck:   0
+Epoch:  2/100 | Train loss:   0.082812 | Train Sync MSE:   0.001584 | Train Sync MAE:   0.021488 | Val. loss:   0.069248 | Val. BER (15.0 dB):   0.000975 | Val. BLER (15.0 dB):   0.019600 | Val. Sync Error MSE (15.0 dB):   0.001349 | Val. Sync Error MAE (15.0 dB):   0.021112 | Batch size: 5000 | Learning rate: 3.000000e-05 | Sync learning rate: 1.000000e-06 | Stuck:   1
+Epoch 2: Start joint training of encoder and sync and decoder.
+
+Epoch 3: Initialize lowest cost to 0.087122
+
+Epoch:  3/100 | Train loss:   0.065713 | Train Sync MSE:   0.001333 | Train Sync MAE:   0.020871 | Val. loss:   0.087122 | Val. BER (15.0 dB):   0.001469 | Val. BLER (15.0 dB):   0.022400 | Val. Sync Error MSE (15.0 dB):   0.001585 | Val. Sync Error MAE (15.0 dB):   0.021454 | Batch size: 5000 | Learning rate: 3.000000e-05 | Sync learning rate: 1.000000e-06 | Stuck:   0
+Epoch:  4/100 | Train loss:   0.062524 | Train Sync MSE:   0.001385 | Train Sync MAE:   0.020690 | Val. loss:   0.068015 | Val. BER (15.0 dB):   0.000737 | Val. BLER (15.0 dB):   0.020400 | Val. Sync Error MSE (15.0 dB):   0.000939 | Val. Sync Error MAE (15.0 dB):   0.020214 | Batch size: 5000 | Learning rate: 3.000000e-05 | Sync learning rate: 1.000000e-06 | Stuck:   0
+Epoch:  5/100 | Train loss:   0.072799 | Train Sync MSE:   0.001189 | Train Sync MAE:   0.020656 | Val. loss:   0.059264 | Val. BER (15.0 dB):   0.001169 | Val. BLER (15.0 dB):   0.016400 | Val. Sync Error MSE (15.0 dB):   0.001479 | Val. Sync Error MAE (15.0 dB):   0.020574 | Batch size: 5000 | Learning rate: 3.000000e-05 | Sync learning rate: 1.000000e-06 | Stuck:   0
+Epoch:  6/100 | Train loss:   0.068477 | Train Sync MSE:   0.001175 | Train Sync MAE:   0.020309 | Val. loss:   0.075399 | Val. BER (15.0 dB):   0.000988 | Val. BLER (15.0 dB):   0.023600 | Val. Sync Error MSE (15.0 dB):   0.001142 | Val. Sync Error MAE (15.0 dB):   0.020955 | Batch size: 5000 | Learning rate: 3.000000e-05 | Sync learning rate: 1.000000e-06 | Stuck:   1
+Epoch:  7/100 | Train loss:   0.070687 | Train Sync MSE:   0.001593 | Train Sync MAE:   0.020869 | Val. loss:   0.058196 | Val. BER (15.0 dB):   0.000956 | Val. BLER (15.0 dB):   0.019600 | Val. Sync Error MSE (15.0 dB):   0.002598 | Val. Sync Error MAE (15.0 dB):   0.021119 | Batch size: 5000 | Learning rate: 3.000000e-05 | Sync learning rate: 1.000000e-06 | Stuck:   0
+Epoch:  8/100 | Train loss:   0.061456 | Train Sync MSE:   0.001241 | Train Sync MAE:   0.020077 | Val. loss:   0.060957 | Val. BER (15.0 dB):   0.000888 | Val. BLER (15.0 dB):   0.017600 | Val. Sync Error MSE (15.0 dB):   0.001168 | Val. Sync Error MAE (15.0 dB):   0.020325 | Batch size: 5000 | Learning rate: 3.000000e-05 | Sync learning rate: 1.000000e-06 | Stuck:   1
+Epoch:  9/100 | Train loss:   0.066901 | Train Sync MSE:   0.001376 | Train Sync MAE:   0.020346 | Val. loss:   0.066739 | Val. BER (15.0 dB):   0.001187 | Val. BLER (15.0 dB):   0.018800 | Val. Sync Error MSE (15.0 dB):   0.001350 | Val. Sync Error MAE (15.0 dB):   0.019603 | Batch size: 5000 | Learning rate: 3.000000e-05 | Sync learning rate: 1.000000e-06 | Stuck:   2
+Epoch: 10/100 | Train loss:   0.060851 | Train Sync MSE:   0.001495 | Train Sync MAE:   0.020567 | Val. loss:   0.057287 | Val. BER (15.0 dB):   0.000694 | Val. BLER (15.0 dB):   0.019200 | Val. Sync Error MSE (15.0 dB):   0.001003 | Val. Sync Error MAE (15.0 dB):   0.019944 | Batch size: 5000 | Learning rate: 3.000000e-05 | Sync learning rate: 1.000000e-06 | Stuck:   0
+Epoch: 11/100 | Train loss:   0.059339 | Train Sync MSE:   0.001854 | Train Sync MAE:   0.020351 | Val. loss:   0.081266 | Val. BER (15.0 dB):   0.001238 | Val. BLER (15.0 dB):   0.022400 | Val. Sync Error MSE (15.0 dB):   0.001428 | Val. Sync Error MAE (15.0 dB):   0.020749 | Batch size: 5000 | Learning rate: 3.000000e-05 | Sync learning rate: 1.000000e-06 | Stuck:   1
+Epoch: 12/100 | Train loss:   0.056307 | Train Sync MSE:   0.001411 | Train Sync MAE:   0.019876 | Val. loss:   0.057922 | Val. BER (15.0 dB):   0.000875 | Val. BLER (15.0 dB):   0.016000 | Val. Sync Error MSE (15.0 dB):   0.000995 | Val. Sync Error MAE (15.0 dB):   0.019503 | Batch size: 5000 | Learning rate: 3.000000e-05 | Sync learning rate: 1.000000e-06 | Stuck:   2
+Epoch: 13/100 | Train loss:   0.065937 | Train Sync MSE:   0.001585 | Train Sync MAE:   0.020870 | Val. loss:   0.072637 | Val. BER (15.0 dB):   0.001225 | Val. BLER (15.0 dB):   0.019600 | Val. Sync Error MSE (15.0 dB):   0.001199 | Val. Sync Error MAE (15.0 dB):   0.020437 | Batch size: 5000 | Learning rate: 3.000000e-05 | Sync learning rate: 1.000000e-06 | Stuck:   3
+Epoch: 14/100 | Train loss:   0.063214 | Train Sync MSE:   0.001747 | Train Sync MAE:   0.020627 | Val. loss:   0.055511 | Val. BER (15.0 dB):   0.000788 | Val. BLER (15.0 dB):   0.014800 | Val. Sync Error MSE (15.0 dB):   0.001205 | Val. Sync Error MAE (15.0 dB):   0.019737 | Batch size: 5000 | Learning rate: 3.000000e-05 | Sync learning rate: 1.000000e-06 | Stuck:   0
+Epoch: 15/100 | Train loss:   0.058311 | Train Sync MSE:   0.001114 | Train Sync MAE:   0.019917 | Val. loss:   0.063226 | Val. BER (15.0 dB):   0.001512 | Val. BLER (15.0 dB):   0.018800 | Val. Sync Error MSE (15.0 dB):   0.001451 | Val. Sync Error MAE (15.0 dB):   0.020297 | Batch size: 5000 | Learning rate: 3.000000e-05 | Sync learning rate: 1.000000e-06 | Stuck:   1
+Epoch: 16/100 | Train loss:   0.053276 | Train Sync MSE:   0.001003 | Train Sync MAE:   0.019349 | Val. loss:   0.072858 | Val. BER (15.0 dB):   0.001219 | Val. BLER (15.0 dB):   0.022000 | Val. Sync Error MSE (15.0 dB):   0.001247 | Val. Sync Error MAE (15.0 dB):   0.020500 | Batch size: 5000 | Learning rate: 3.000000e-05 | Sync learning rate: 1.000000e-06 | Stuck:   2
+Epoch: 17/100 | Train loss:   0.056025 | Train Sync MSE:   0.001514 | Train Sync MAE:   0.020153 | Val. loss:   0.056186 | Val. BER (15.0 dB):   0.000781 | Val. BLER (15.0 dB):   0.015600 | Val. Sync Error MSE (15.0 dB):   0.000920 | Val. Sync Error MAE (15.0 dB):   0.019457 | Batch size: 5000 | Learning rate: 3.000000e-05 | Sync learning rate: 1.000000e-06 | Stuck:   3
+Epoch: 18/100 | Train loss:   0.052449 | Train Sync MSE:   0.001206 | Train Sync MAE:   0.019937 | Val. loss:   0.052968 | Val. BER (15.0 dB):   0.000700 | Val. BLER (15.0 dB):   0.014400 | Val. Sync Error MSE (15.0 dB):   0.000927 | Val. Sync Error MAE (15.0 dB):   0.019241 | Batch size: 5000 | Learning rate: 3.000000e-05 | Sync learning rate: 1.000000e-06 | Stuck:   0
+Epoch: 19/100 | Train loss:   0.052917 | Train Sync MSE:   0.001230 | Train Sync MAE:   0.019747 | Val. loss:   0.066589 | Val. BER (15.0 dB):   0.000888 | Val. BLER (15.0 dB):   0.018800 | Val. Sync Error MSE (15.0 dB):   0.001000 | Val. Sync Error MAE (15.0 dB):   0.019808 | Batch size: 5000 | Learning rate: 3.000000e-05 | Sync learning rate: 1.000000e-06 | Stuck:   1
+Epoch: 20/100 | Train loss:   0.048394 | Train Sync MSE:   0.001012 | Train Sync MAE:   0.019425 | Val. loss:   0.080239 | Val. BER (15.0 dB):   0.001288 | Val. BLER (15.0 dB):   0.023200 | Val. Sync Error MSE (15.0 dB):   0.001635 | Val. Sync Error MAE (15.0 dB):   0.020755 | Batch size: 5000 | Learning rate: 3.000000e-05 | Sync learning rate: 1.000000e-06 | Stuck:   2
+Epoch: 21/100 | Train loss:   0.066982 | Train Sync MSE:   0.001193 | Train Sync MAE:   0.019755 | Val. loss:   0.050555 | Val. BER (15.0 dB):   0.000800 | Val. BLER (15.0 dB):   0.016400 | Val. Sync Error MSE (15.0 dB):   0.001074 | Val. Sync Error MAE (15.0 dB):   0.019932 | Batch size: 5000 | Learning rate: 3.000000e-05 | Sync learning rate: 1.000000e-06 | Stuck:   0
+Epoch: 22/100 | Train loss:   0.054183 | Train Sync MSE:   0.001577 | Train Sync MAE:   0.019626 | Val. loss:   0.054121 | Val. BER (15.0 dB):   0.000925 | Val. BLER (15.0 dB):   0.014800 | Val. Sync Error MSE (15.0 dB):   0.001223 | Val. Sync Error MAE (15.0 dB):   0.019872 | Batch size: 5000 | Learning rate: 3.000000e-05 | Sync learning rate: 1.000000e-06 | Stuck:   1
+Epoch: 23/100 | Train loss:   0.049497 | Train Sync MSE:   0.001082 | Train Sync MAE:   0.019717 | Val. loss:   0.052478 | Val. BER (15.0 dB):   0.000856 | Val. BLER (15.0 dB):   0.013600 | Val. Sync Error MSE (15.0 dB):   0.000966 | Val. Sync Error MAE (15.0 dB):   0.019126 | Batch size: 5000 | Learning rate: 3.000000e-05 | Sync learning rate: 1.000000e-06 | Stuck:   2
+Epoch: 24/100 | Train loss:   0.055642 | Train Sync MSE:   0.001152 | Train Sync MAE:   0.019786 | Val. loss:   0.064785 | Val. BER (15.0 dB):   0.001344 | Val. BLER (15.0 dB):   0.018800 | Val. Sync Error MSE (15.0 dB):   0.001492 | Val. Sync Error MAE (15.0 dB):   0.020109 | Batch size: 5000 | Learning rate: 3.000000e-05 | Sync learning rate: 1.000000e-06 | Stuck:   3
+Epoch: 25/100 | Train loss:   0.054233 | Train Sync MSE:   0.001372 | Train Sync MAE:   0.019718 | Val. loss:   0.071445 | Val. BER (15.0 dB):   0.001350 | Val. BLER (15.0 dB):   0.020800 | Val. Sync Error MSE (15.0 dB):   0.001820 | Val. Sync Error MAE (15.0 dB):   0.020916 | Batch size: 5000 | Learning rate: 3.000000e-05 | Sync learning rate: 1.000000e-06 | Stuck:   4
+Epoch: 26/100 | Train loss:   0.064935 | Train Sync MSE:   0.001940 | Train Sync MAE:   0.020085 | Val. loss:   0.049137 | Val. BER (15.0 dB):   0.000856 | Val. BLER (15.0 dB):   0.016000 | Val. Sync Error MSE (15.0 dB):   0.001225 | Val. Sync Error MAE (15.0 dB):   0.019117 | Batch size: 5000 | Learning rate: 3.000000e-05 | Sync learning rate: 1.000000e-06 | Stuck:   0
+Epoch: 27/100 | Train loss:   0.065223 | Train Sync MSE:   0.001302 | Train Sync MAE:   0.020018 | Val. loss:   0.045666 | Val. BER (15.0 dB):   0.000375 | Val. BLER (15.0 dB):   0.014400 | Val. Sync Error MSE (15.0 dB):   0.000917 | Val. Sync Error MAE (15.0 dB):   0.019686 | Batch size: 5000 | Learning rate: 3.000000e-05 | Sync learning rate: 1.000000e-06 | Stuck:   0
+Epoch: 28/100 | Train loss:   0.057026 | Train Sync MSE:   0.001114 | Train Sync MAE:   0.019705 | Val. loss:   0.079366 | Val. BER (15.0 dB):   0.001981 | Val. BLER (15.0 dB):   0.020000 | Val. Sync Error MSE (15.0 dB):   0.001629 | Val. Sync Error MAE (15.0 dB):   0.019751 | Batch size: 5000 | Learning rate: 3.000000e-05 | Sync learning rate: 1.000000e-06 | Stuck:   1
+Epoch: 29/100 | Train loss:   0.055638 | Train Sync MSE:   0.001315 | Train Sync MAE:   0.020031 | Val. loss:   0.054332 | Val. BER (15.0 dB):   0.000769 | Val. BLER (15.0 dB):   0.016400 | Val. Sync Error MSE (15.0 dB):   0.000849 | Val. Sync Error MAE (15.0 dB):   0.019245 | Batch size: 5000 | Learning rate: 3.000000e-05 | Sync learning rate: 1.000000e-06 | Stuck:   2
+Epoch: 30/100 | Train loss:   0.060831 | Train Sync MSE:   0.001559 | Train Sync MAE:   0.020334 | Val. loss:   0.072698 | Val. BER (15.0 dB):   0.001506 | Val. BLER (15.0 dB):   0.022400 | Val. Sync Error MSE (15.0 dB):   0.001797 | Val. Sync Error MAE (15.0 dB):   0.021878 | Batch size: 5000 | Learning rate: 3.000000e-05 | Sync learning rate: 1.000000e-06 | Stuck:   3
+Epoch: 31/100 | Train loss:   0.057000 | Train Sync MSE:   0.001135 | Train Sync MAE:   0.019349 | Val. loss:   0.055616 | Val. BER (15.0 dB):   0.001019 | Val. BLER (15.0 dB):   0.017200 | Val. Sync Error MSE (15.0 dB):   0.001118 | Val. Sync Error MAE (15.0 dB):   0.019436 | Batch size: 5000 | Learning rate: 3.000000e-05 | Sync learning rate: 1.000000e-06 | Stuck:   4
+Epoch: 32/100 | Train loss:   0.060431 | Train Sync MSE:   0.001627 | Train Sync MAE:   0.020121 | Val. loss:   0.046392 | Val. BER (15.0 dB):   0.000812 | Val. BLER (15.0 dB):   0.013600 | Val. Sync Error MSE (15.0 dB):   0.001155 | Val. Sync Error MAE (15.0 dB):   0.019539 | Batch size: 5000 | Learning rate: 3.000000e-05 | Sync learning rate: 1.000000e-06 | Stuck:   5
+Epoch: 33/100 | Train loss:   0.054203 | Train Sync MSE:   0.001351 | Train Sync MAE:   0.019901 | Val. loss:   0.059063 | Val. BER (15.0 dB):   0.001238 | Val. BLER (15.0 dB):   0.018000 | Val. Sync Error MSE (15.0 dB):   0.001509 | Val. Sync Error MAE (15.0 dB):   0.020174 | Batch size: 5000 | Learning rate: 3.000000e-05 | Sync learning rate: 1.000000e-06 | Stuck:   6
+Epoch: 34/100 | Train loss:   0.058375 | Train Sync MSE:   0.001169 | Train Sync MAE:   0.019748 | Val. loss:   0.063210 | Val. BER (15.0 dB):   0.000769 | Val. BLER (15.0 dB):   0.019200 | Val. Sync Error MSE (15.0 dB):   0.000972 | Val. Sync Error MAE (15.0 dB):   0.019423 | Batch size: 5000 | Learning rate: 3.000000e-05 | Sync learning rate: 1.000000e-06 | Stuck:   7
+Epoch: 35/100 | Train loss:   0.060991 | Train Sync MSE:   0.001385 | Train Sync MAE:   0.020163 | Val. loss:   0.051308 | Val. BER (15.0 dB):   0.000838 | Val. BLER (15.0 dB):   0.016000 | Val. Sync Error MSE (15.0 dB):   0.001122 | Val. Sync Error MAE (15.0 dB):   0.019941 | Batch size: 5000 | Learning rate: 3.000000e-05 | Sync learning rate: 1.000000e-06 | Stuck:   8
+Epoch: 36/100 | Train loss:   0.060821 | Train Sync MSE:   0.001280 | Train Sync MAE:   0.019893 | Val. loss:   0.053847 | Val. BER (15.0 dB):   0.000769 | Val. BLER (15.0 dB):   0.017200 | Val. Sync Error MSE (15.0 dB):   0.001000 | Val. Sync Error MAE (15.0 dB):   0.019895 | Batch size: 5000 | Learning rate: 3.000000e-05 | Sync learning rate: 1.000000e-06 | Stuck:   9
+Epoch: 37/100 | Train loss:   0.054334 | Train Sync MSE:   0.001383 | Train Sync MAE:   0.019688 | Val. loss:   0.058096 | Val. BER (15.0 dB):   0.001006 | Val. BLER (15.0 dB):   0.018000 | Val. Sync Error MSE (15.0 dB):   0.001342 | Val. Sync Error MAE (15.0 dB):   0.019977 | Batch size: 5000 | Learning rate: 3.000000e-05 | Sync learning rate: 1.000000e-06 | Stuck:  10
+Epoch: 38/100 | Train loss:   0.060691 | Train Sync MSE:   0.001381 | Train Sync MAE:   0.019635 | Val. loss:   0.065542 | Val. BER (15.0 dB):   0.001281 | Val. BLER (15.0 dB):   0.018000 | Val. Sync Error MSE (15.0 dB):   0.001324 | Val. Sync Error MAE (15.0 dB):   0.019999 | Batch size: 5000 | Learning rate: 3.000000e-05 | Sync learning rate: 1.000000e-06 | Stuck:  11
+Epoch: 39/100 | Train loss:   0.060283 | Train Sync MSE:   0.001638 | Train Sync MAE:   0.020031 | Val. loss:   0.055258 | Val. BER (15.0 dB):   0.000781 | Val. BLER (15.0 dB):   0.016400 | Val. Sync Error MSE (15.0 dB):   0.001241 | Val. Sync Error MAE (15.0 dB):   0.019451 | Batch size: 5000 | Learning rate: 3.000000e-05 | Sync learning rate: 1.000000e-06 | Stuck:  12
+Epoch: 40/100 | Train loss:   0.054698 | Train Sync MSE:   0.001405 | Train Sync MAE:   0.019774 | Val. loss:   0.060906 | Val. BER (15.0 dB):   0.001306 | Val. BLER (15.0 dB):   0.019600 | Val. Sync Error MSE (15.0 dB):   0.001170 | Val. Sync Error MAE (15.0 dB):   0.020008 | Batch size: 5000 | Learning rate: 3.000000e-05 | Sync learning rate: 1.000000e-06 | Stuck:  13
+Epoch: 41/100 | Train loss:   0.053079 | Train Sync MSE:   0.001136 | Train Sync MAE:   0.019267 | Val. loss:   0.045065 | Val. BER (15.0 dB):   0.000806 | Val. BLER (15.0 dB):   0.012400 | Val. Sync Error MSE (15.0 dB):   0.001059 | Val. Sync Error MAE (15.0 dB):   0.019352 | Batch size: 5000 | Learning rate: 3.000000e-05 | Sync learning rate: 1.000000e-06 | Stuck:   0
+Epoch: 42/100 | Train loss:   0.061314 | Train Sync MSE:   0.001286 | Train Sync MAE:   0.019681 | Val. loss:   0.054803 | Val. BER (15.0 dB):   0.001144 | Val. BLER (15.0 dB):   0.015200 | Val. Sync Error MSE (15.0 dB):   0.001221 | Val. Sync Error MAE (15.0 dB):   0.020321 | Batch size: 5000 | Learning rate: 3.000000e-05 | Sync learning rate: 1.000000e-06 | Stuck:   1
+Epoch: 43/100 | Train loss:   0.055424 | Train Sync MSE:   0.001233 | Train Sync MAE:   0.019548 | Val. loss:   0.067706 | Val. BER (15.0 dB):   0.001056 | Val. BLER (15.0 dB):   0.020400 | Val. Sync Error MSE (15.0 dB):   0.001164 | Val. Sync Error MAE (15.0 dB):   0.019981 | Batch size: 5000 | Learning rate: 3.000000e-05 | Sync learning rate: 1.000000e-06 | Stuck:   2
+Epoch: 44/100 | Train loss:   0.056770 | Train Sync MSE:   0.001444 | Train Sync MAE:   0.019661 | Val. loss:   0.064537 | Val. BER (15.0 dB):   0.001063 | Val. BLER (15.0 dB):   0.022800 | Val. Sync Error MSE (15.0 dB):   0.002318 | Val. Sync Error MAE (15.0 dB):   0.020332 | Batch size: 5000 | Learning rate: 3.000000e-05 | Sync learning rate: 1.000000e-06 | Stuck:   3
+Epoch: 45/100 | Train loss:   0.054219 | Train Sync MSE:   0.001090 | Train Sync MAE:   0.019553 | Val. loss:   0.046200 | Val. BER (15.0 dB):   0.000575 | Val. BLER (15.0 dB):   0.015600 | Val. Sync Error MSE (15.0 dB):   0.000748 | Val. Sync Error MAE (15.0 dB):   0.018284 | Batch size: 5000 | Learning rate: 3.000000e-05 | Sync learning rate: 1.000000e-06 | Stuck:   4
+Epoch: 46/100 | Train loss:   0.060682 | Train Sync MSE:   0.001282 | Train Sync MAE:   0.019667 | Val. loss:   0.058547 | Val. BER (15.0 dB):   0.000719 | Val. BLER (15.0 dB):   0.018000 | Val. Sync Error MSE (15.0 dB):   0.000944 | Val. Sync Error MAE (15.0 dB):   0.019232 | Batch size: 5000 | Learning rate: 3.000000e-05 | Sync learning rate: 1.000000e-06 | Stuck:   5
+Epoch: 47/100 | Train loss:   0.062401 | Train Sync MSE:   0.001887 | Train Sync MAE:   0.020182 | Val. loss:   0.044318 | Val. BER (15.0 dB):   0.000737 | Val. BLER (15.0 dB):   0.014000 | Val. Sync Error MSE (15.0 dB):   0.001005 | Val. Sync Error MAE (15.0 dB):   0.019162 | Batch size: 5000 | Learning rate: 3.000000e-05 | Sync learning rate: 1.000000e-06 | Stuck:   0
+Epoch: 48/100 | Train loss:   0.054074 | Train Sync MSE:   0.001245 | Train Sync MAE:   0.019792 | Val. loss:   0.060702 | Val. BER (15.0 dB):   0.001006 | Val. BLER (15.0 dB):   0.016400 | Val. Sync Error MSE (15.0 dB):   0.001359 | Val. Sync Error MAE (15.0 dB):   0.020828 | Batch size: 5000 | Learning rate: 3.000000e-05 | Sync learning rate: 1.000000e-06 | Stuck:   1
+Epoch: 49/100 | Train loss:   0.060067 | Train Sync MSE:   0.001181 | Train Sync MAE:   0.019821 | Val. loss:   0.046217 | Val. BER (15.0 dB):   0.000744 | Val. BLER (15.0 dB):   0.014800 | Val. Sync Error MSE (15.0 dB):   0.000852 | Val. Sync Error MAE (15.0 dB):   0.018736 | Batch size: 5000 | Learning rate: 3.000000e-05 | Sync learning rate: 1.000000e-06 | Stuck:   2
+Epoch: 50/100 | Train loss:   0.059676 | Train Sync MSE:   0.001229 | Train Sync MAE:   0.019563 | Val. loss:   0.059496 | Val. BER (15.0 dB):   0.000862 | Val. BLER (15.0 dB):   0.017600 | Val. Sync Error MSE (15.0 dB):   0.001292 | Val. Sync Error MAE (15.0 dB):   0.020665 | Batch size: 5000 | Learning rate: 3.000000e-05 | Sync learning rate: 1.000000e-06 | Stuck:   3
+Epoch: 51/100 | Train loss:   0.054916 | Train Sync MSE:   0.001083 | Train Sync MAE:   0.019651 | Val. loss:   0.043607 | Val. BER (15.0 dB):   0.000838 | Val. BLER (15.0 dB):   0.012800 | Val. Sync Error MSE (15.0 dB):   0.000940 | Val. Sync Error MAE (15.0 dB):   0.019243 | Batch size: 5000 | Learning rate: 3.000000e-05 | Sync learning rate: 1.000000e-06 | Stuck:   0
+Epoch: 52/100 | Train loss:   0.058457 | Train Sync MSE:   0.001084 | Train Sync MAE:   0.019434 | Val. loss:   0.049922 | Val. BER (15.0 dB):   0.000825 | Val. BLER (15.0 dB):   0.014800 | Val. Sync Error MSE (15.0 dB):   0.000966 | Val. Sync Error MAE (15.0 dB):   0.018566 | Batch size: 5000 | Learning rate: 3.000000e-05 | Sync learning rate: 1.000000e-06 | Stuck:   1
+Epoch: 53/100 | Train loss:   0.057408 | Train Sync MSE:   0.001477 | Train Sync MAE:   0.019770 | Val. loss:   0.051098 | Val. BER (15.0 dB):   0.000737 | Val. BLER (15.0 dB):   0.016400 | Val. Sync Error MSE (15.0 dB):   0.000878 | Val. Sync Error MAE (15.0 dB):   0.018817 | Batch size: 5000 | Learning rate: 3.000000e-05 | Sync learning rate: 1.000000e-06 | Stuck:   2
+Epoch: 54/100 | Train loss:   0.055096 | Train Sync MSE:   0.001561 | Train Sync MAE:   0.020074 | Val. loss:   0.035998 | Val. BER (15.0 dB):   0.000694 | Val. BLER (15.0 dB):   0.011200 | Val. Sync Error MSE (15.0 dB):   0.000951 | Val. Sync Error MAE (15.0 dB):   0.018511 | Batch size: 5000 | Learning rate: 3.000000e-05 | Sync learning rate: 1.000000e-06 | Stuck:   0
+Epoch: 55/100 | Train loss:   0.054387 | Train Sync MSE:   0.000982 | Train Sync MAE:   0.019470 | Val. loss:   0.057435 | Val. BER (15.0 dB):   0.001156 | Val. BLER (15.0 dB):   0.018000 | Val. Sync Error MSE (15.0 dB):   0.001194 | Val. Sync Error MAE (15.0 dB):   0.019848 | Batch size: 5000 | Learning rate: 3.000000e-05 | Sync learning rate: 1.000000e-06 | Stuck:   1
+Epoch: 56/100 | Train loss:   0.059427 | Train Sync MSE:   0.001555 | Train Sync MAE:   0.019869 | Val. loss:   0.058457 | Val. BER (15.0 dB):   0.000844 | Val. BLER (15.0 dB):   0.016800 | Val. Sync Error MSE (15.0 dB):   0.001004 | Val. Sync Error MAE (15.0 dB):   0.019494 | Batch size: 5000 | Learning rate: 3.000000e-05 | Sync learning rate: 1.000000e-06 | Stuck:   2
+Epoch: 57/100 | Train loss:   0.048103 | Train Sync MSE:   0.001042 | Train Sync MAE:   0.019480 | Val. loss:   0.070895 | Val. BER (15.0 dB):   0.001437 | Val. BLER (15.0 dB):   0.019600 | Val. Sync Error MSE (15.0 dB):   0.001418 | Val. Sync Error MAE (15.0 dB):   0.020091 | Batch size: 5000 | Learning rate: 3.000000e-05 | Sync learning rate: 1.000000e-06 | Stuck:   3
+Epoch: 58/100 | Train loss:   0.058896 | Train Sync MSE:   0.001386 | Train Sync MAE:   0.019901 | Val. loss:   0.067605 | Val. BER (15.0 dB):   0.001162 | Val. BLER (15.0 dB):   0.018400 | Val. Sync Error MSE (15.0 dB):   0.001031 | Val. Sync Error MAE (15.0 dB):   0.019610 | Batch size: 5000 | Learning rate: 3.000000e-05 | Sync learning rate: 1.000000e-06 | Stuck:   4
+Epoch: 59/100 | Train loss:   0.058056 | Train Sync MSE:   0.001230 | Train Sync MAE:   0.019908 | Val. loss:   0.075138 | Val. BER (15.0 dB):   0.001475 | Val. BLER (15.0 dB):   0.021600 | Val. Sync Error MSE (15.0 dB):   0.001323 | Val. Sync Error MAE (15.0 dB):   0.020233 | Batch size: 5000 | Learning rate: 3.000000e-05 | Sync learning rate: 1.000000e-06 | Stuck:   5
+Epoch: 60/100 | Train loss:   0.065391 | Train Sync MSE:   0.001323 | Train Sync MAE:   0.019786 | Val. loss:   0.069677 | Val. BER (15.0 dB):   0.001306 | Val. BLER (15.0 dB):   0.019600 | Val. Sync Error MSE (15.0 dB):   0.001595 | Val. Sync Error MAE (15.0 dB):   0.020047 | Batch size: 5000 | Learning rate: 3.000000e-05 | Sync learning rate: 1.000000e-06 | Stuck:   6
+Epoch: 61/100 | Train loss:   0.054195 | Train Sync MSE:   0.001241 | Train Sync MAE:   0.019857 | Val. loss:   0.050031 | Val. BER (15.0 dB):   0.001194 | Val. BLER (15.0 dB):   0.014000 | Val. Sync Error MSE (15.0 dB):   0.001316 | Val. Sync Error MAE (15.0 dB):   0.019446 | Batch size: 5000 | Learning rate: 3.000000e-05 | Sync learning rate: 1.000000e-06 | Stuck:   7
+Epoch: 62/100 | Train loss:   0.061636 | Train Sync MSE:   0.001521 | Train Sync MAE:   0.019959 | Val. loss:   0.066173 | Val. BER (15.0 dB):   0.001012 | Val. BLER (15.0 dB):   0.020000 | Val. Sync Error MSE (15.0 dB):   0.001109 | Val. Sync Error MAE (15.0 dB):   0.019820 | Batch size: 5000 | Learning rate: 3.000000e-05 | Sync learning rate: 1.000000e-06 | Stuck:   8
+Epoch: 63/100 | Train loss:   0.055154 | Train Sync MSE:   0.001590 | Train Sync MAE:   0.020214 | Val. loss:   0.048169 | Val. BER (15.0 dB):   0.000869 | Val. BLER (15.0 dB):   0.014400 | Val. Sync Error MSE (15.0 dB):   0.001212 | Val. Sync Error MAE (15.0 dB):   0.019866 | Batch size: 5000 | Learning rate: 3.000000e-05 | Sync learning rate: 1.000000e-06 | Stuck:   9
+Epoch: 64/100 | Train loss:   0.047733 | Train Sync MSE:   0.001054 | Train Sync MAE:   0.019350 | Val. loss:   0.073411 | Val. BER (15.0 dB):   0.001481 | Val. BLER (15.0 dB):   0.023600 | Val. Sync Error MSE (15.0 dB):   0.001531 | Val. Sync Error MAE (15.0 dB):   0.020712 | Batch size: 5000 | Learning rate: 3.000000e-05 | Sync learning rate: 1.000000e-06 | Stuck:  10
+Epoch: 65/100 | Train loss:   0.056890 | Train Sync MSE:   0.001122 | Train Sync MAE:   0.019589 | Val. loss:   0.051069 | Val. BER (15.0 dB):   0.000744 | Val. BLER (15.0 dB):   0.015200 | Val. Sync Error MSE (15.0 dB):   0.001197 | Val. Sync Error MAE (15.0 dB):   0.020130 | Batch size: 5000 | Learning rate: 3.000000e-05 | Sync learning rate: 1.000000e-06 | Stuck:  11
+Epoch: 66/100 | Train loss:   0.060512 | Train Sync MSE:   0.001533 | Train Sync MAE:   0.019840 | Val. loss:   0.053405 | Val. BER (15.0 dB):   0.000925 | Val. BLER (15.0 dB):   0.014800 | Val. Sync Error MSE (15.0 dB):   0.000874 | Val. Sync Error MAE (15.0 dB):   0.018981 | Batch size: 5000 | Learning rate: 3.000000e-05 | Sync learning rate: 1.000000e-06 | Stuck:  12
+Epoch: 67/100 | Train loss:   0.052972 | Train Sync MSE:   0.001376 | Train Sync MAE:   0.020015 | Val. loss:   0.053089 | Val. BER (15.0 dB):   0.001012 | Val. BLER (15.0 dB):   0.015600 | Val. Sync Error MSE (15.0 dB):   0.001410 | Val. Sync Error MAE (15.0 dB):   0.020970 | Batch size: 5000 | Learning rate: 3.000000e-05 | Sync learning rate: 1.000000e-06 | Stuck:  13
+Epoch: 68/100 | Train loss:   0.057348 | Train Sync MSE:   0.001246 | Train Sync MAE:   0.019506 | Val. loss:   0.057369 | Val. BER (15.0 dB):   0.001000 | Val. BLER (15.0 dB):   0.018000 | Val. Sync Error MSE (15.0 dB):   0.001462 | Val. Sync Error MAE (15.0 dB):   0.020065 | Batch size: 5000 | Learning rate: 3.000000e-05 | Sync learning rate: 1.000000e-06 | Stuck:  14
+Epoch: 69/100 | Train loss:   0.052723 | Train Sync MSE:   0.001284 | Train Sync MAE:   0.019847 | Val. loss:   0.069047 | Val. BER (15.0 dB):   0.001150 | Val. BLER (15.0 dB):   0.020800 | Val. Sync Error MSE (15.0 dB):   0.001181 | Val. Sync Error MAE (15.0 dB):   0.019565 | Batch size: 5000 | Learning rate: 3.000000e-05 | Sync learning rate: 1.000000e-06 | Stuck:  15
+Epoch: 70/100 | Train loss:   0.058267 | Train Sync MSE:   0.001222 | Train Sync MAE:   0.019729 | Val. loss:   0.050528 | Val. BER (15.0 dB):   0.001187 | Val. BLER (15.0 dB):   0.014400 | Val. Sync Error MSE (15.0 dB):   0.001255 | Val. Sync Error MAE (15.0 dB):   0.019521 | Batch size: 5000 | Learning rate: 3.000000e-05 | Sync learning rate: 1.000000e-06 | Stuck:  16
+Epoch: 71/100 | Train loss:   0.050923 | Train Sync MSE:   0.001102 | Train Sync MAE:   0.019410 | Val. loss:   0.059927 | Val. BER (15.0 dB):   0.001369 | Val. BLER (15.0 dB):   0.017200 | Val. Sync Error MSE (15.0 dB):   0.001279 | Val. Sync Error MAE (15.0 dB):   0.020068 | Batch size: 5000 | Learning rate: 3.000000e-05 | Sync learning rate: 1.000000e-06 | Stuck:  17
+Epoch: 72/100 | Train loss:   0.047568 | Train Sync MSE:   0.001279 | Train Sync MAE:   0.019626 | Val. loss:   0.049029 | Val. BER (15.0 dB):   0.000844 | Val. BLER (15.0 dB):   0.014800 | Val. Sync Error MSE (15.0 dB):   0.001213 | Val. Sync Error MAE (15.0 dB):   0.019496 | Batch size: 5000 | Learning rate: 3.000000e-05 | Sync learning rate: 1.000000e-06 | Stuck:  18
+Epoch: 73/100 | Train loss:   0.060436 | Train Sync MSE:   0.001259 | Train Sync MAE:   0.019768 | Val. loss:   0.049204 | Val. BER (15.0 dB):   0.000806 | Val. BLER (15.0 dB):   0.015200 | Val. Sync Error MSE (15.0 dB):   0.001170 | Val. Sync Error MAE (15.0 dB):   0.019924 | Batch size: 5000 | Learning rate: 3.000000e-05 | Sync learning rate: 1.000000e-06 | Stuck:  19
+Epoch: 74/100 | Train loss:   0.053880 | Train Sync MSE:   0.001075 | Train Sync MAE:   0.019355 | Val. loss:   0.068194 | Val. BER (15.0 dB):   0.001662 | Val. BLER (15.0 dB):   0.020800 | Val. Sync Error MSE (15.0 dB):   0.001288 | Val. Sync Error MAE (15.0 dB):   0.020143 | Batch size: 5000 | Learning rate: 3.000000e-05 | Sync learning rate: 1.000000e-06 | Stuck:  20
+Epoch: 75/100 | Train loss:   0.053331 | Train Sync MSE:   0.001217 | Train Sync MAE:   0.019765 | Val. loss:   0.050049 | Val. BER (15.0 dB):   0.001081 | Val. BLER (15.0 dB):   0.013600 | Val. Sync Error MSE (15.0 dB):   0.001128 | Val. Sync Error MAE (15.0 dB):   0.020086 | Batch size: 5000 | Learning rate: 3.000000e-05 | Sync learning rate: 1.000000e-06 | Stuck:  21
+Epoch: 76/100 | Train loss:   0.060305 | Train Sync MSE:   0.001413 | Train Sync MAE:   0.020208 | Val. loss:   0.062805 | Val. BER (15.0 dB):   0.000775 | Val. BLER (15.0 dB):   0.016800 | Val. Sync Error MSE (15.0 dB):   0.001047 | Val. Sync Error MAE (15.0 dB):   0.019834 | Batch size: 5000 | Learning rate: 3.000000e-05 | Sync learning rate: 1.000000e-06 | Stuck:  22
+Epoch: 77/100 | Train loss:   0.059352 | Train Sync MSE:   0.001306 | Train Sync MAE:   0.019916 | Val. loss:   0.061637 | Val. BER (15.0 dB):   0.000981 | Val. BLER (15.0 dB):   0.018800 | Val. Sync Error MSE (15.0 dB):   0.001377 | Val. Sync Error MAE (15.0 dB):   0.020927 | Batch size: 5000 | Learning rate: 3.000000e-05 | Sync learning rate: 1.000000e-06 | Stuck:  23
+Epoch: 78/100 | Train loss:   0.061430 | Train Sync MSE:   0.001313 | Train Sync MAE:   0.019954 | Val. loss:   0.052460 | Val. BER (15.0 dB):   0.000788 | Val. BLER (15.0 dB):   0.016000 | Val. Sync Error MSE (15.0 dB):   0.001117 | Val. Sync Error MAE (15.0 dB):   0.019948 | Batch size: 5000 | Learning rate: 3.000000e-05 | Sync learning rate: 1.000000e-06 | Stuck:  24
+Epoch: 79/100 | Train loss:   0.058410 | Train Sync MSE:   0.001212 | Train Sync MAE:   0.019669 | Val. loss:   0.069298 | Val. BER (15.0 dB):   0.001025 | Val. BLER (15.0 dB):   0.019600 | Val. Sync Error MSE (15.0 dB):   0.000956 | Val. Sync Error MAE (15.0 dB):   0.019383 | Batch size: 5000 | Learning rate: 3.000000e-05 | Sync learning rate: 1.000000e-06 | Stuck:  25
+Epoch: 80/100 | Train loss:   0.056773 | Train Sync MSE:   0.001095 | Train Sync MAE:   0.019424 | Val. loss:   0.048226 | Val. BER (15.0 dB):   0.001112 | Val. BLER (15.0 dB):   0.014400 | Val. Sync Error MSE (15.0 dB):   0.001556 | Val. Sync Error MAE (15.0 dB):   0.019611 | Batch size: 5000 | Learning rate: 3.000000e-05 | Sync learning rate: 1.000000e-06 | Stuck:  26
+Epoch: 81/100 | Train loss:   0.055083 | Train Sync MSE:   0.001170 | Train Sync MAE:   0.019608 | Val. loss:   0.040642 | Val. BER (15.0 dB):   0.000687 | Val. BLER (15.0 dB):   0.011600 | Val. Sync Error MSE (15.0 dB):   0.001282 | Val. Sync Error MAE (15.0 dB):   0.018953 | Batch size: 5000 | Learning rate: 3.000000e-05 | Sync learning rate: 1.000000e-06 | Stuck:  27
+Epoch: 82/100 | Train loss:   0.061424 | Train Sync MSE:   0.001256 | Train Sync MAE:   0.019642 | Val. loss:   0.039782 | Val. BER (15.0 dB):   0.000713 | Val. BLER (15.0 dB):   0.011600 | Val. Sync Error MSE (15.0 dB):   0.000849 | Val. Sync Error MAE (15.0 dB):   0.018964 | Batch size: 5000 | Learning rate: 3.000000e-05 | Sync learning rate: 1.000000e-06 | Stuck:  28
+Epoch: 83/100 | Train loss:   0.060974 | Train Sync MSE:   0.001352 | Train Sync MAE:   0.019794 | Val. loss:   0.051697 | Val. BER (15.0 dB):   0.001506 | Val. BLER (15.0 dB):   0.014400 | Val. Sync Error MSE (15.0 dB):   0.002539 | Val. Sync Error MAE (15.0 dB):   0.020624 | Batch size: 5000 | Learning rate: 3.000000e-05 | Sync learning rate: 1.000000e-06 | Stuck:  29
+Epoch: 84/100 | Train loss:   0.051507 | Train Sync MSE:   0.001257 | Train Sync MAE:   0.019611 | Val. loss:   0.052070 | Val. BER (15.0 dB):   0.000975 | Val. BLER (15.0 dB):   0.015600 | Val. Sync Error MSE (15.0 dB):   0.001155 | Val. Sync Error MAE (15.0 dB):   0.019441 | Batch size: 5000 | Learning rate: 3.000000e-05 | Sync learning rate: 1.000000e-06 | Stuck:  30
+Epoch: 85/100 | Train loss:   0.058552 | Train Sync MSE:   0.001643 | Train Sync MAE:   0.020177 | Val. loss:   0.047838 | Val. BER (15.0 dB):   0.000681 | Val. BLER (15.0 dB):   0.012000 | Val. Sync Error MSE (15.0 dB):   0.001348 | Val. Sync Error MAE (15.0 dB):   0.019356 | Batch size: 5000 | Learning rate: 3.000000e-05 | Sync learning rate: 1.000000e-06 | Stuck:  31
+Epoch: 86/100 | Train loss:   0.056378 | Train Sync MSE:   0.001337 | Train Sync MAE:   0.019590 | Val. loss:   0.062386 | Val. BER (15.0 dB):   0.001213 | Val. BLER (15.0 dB):   0.016800 | Val. Sync Error MSE (15.0 dB):   0.001206 | Val. Sync Error MAE (15.0 dB):   0.019464 | Batch size: 5000 | Learning rate: 3.000000e-05 | Sync learning rate: 1.000000e-06 | Stuck:  32
+Epoch: 87/100 | Train loss:   0.062363 | Train Sync MSE:   0.001334 | Train Sync MAE:   0.019665 | Val. loss:   0.063172 | Val. BER (15.0 dB):   0.001412 | Val. BLER (15.0 dB):   0.017200 | Val. Sync Error MSE (15.0 dB):   0.001619 | Val. Sync Error MAE (15.0 dB):   0.020172 | Batch size: 5000 | Learning rate: 3.000000e-05 | Sync learning rate: 1.000000e-06 | Stuck:  33
+Epoch: 88/100 | Train loss:   0.059926 | Train Sync MSE:   0.001431 | Train Sync MAE:   0.020209 | Val. loss:   0.065688 | Val. BER (15.0 dB):   0.001431 | Val. BLER (15.0 dB):   0.018400 | Val. Sync Error MSE (15.0 dB):   0.001631 | Val. Sync Error MAE (15.0 dB):   0.020948 | Batch size: 5000 | Learning rate: 3.000000e-05 | Sync learning rate: 1.000000e-06 | Stuck:  34
+Epoch: 89/100 | Train loss:   0.054699 | Train Sync MSE:   0.001185 | Train Sync MAE:   0.019583 | Val. loss:   0.073417 | Val. BER (15.0 dB):   0.001238 | Val. BLER (15.0 dB):   0.021200 | Val. Sync Error MSE (15.0 dB):   0.001230 | Val. Sync Error MAE (15.0 dB):   0.020042 | Batch size: 5000 | Learning rate: 3.000000e-05 | Sync learning rate: 1.000000e-06 | Stuck:  35
+Epoch: 90/100 | Train loss:   0.058719 | Train Sync MSE:   0.001302 | Train Sync MAE:   0.019797 | Val. loss:   0.056594 | Val. BER (15.0 dB):   0.000963 | Val. BLER (15.0 dB):   0.015200 | Val. Sync Error MSE (15.0 dB):   0.001047 | Val. Sync Error MAE (15.0 dB):   0.019454 | Batch size: 5000 | Learning rate: 3.000000e-05 | Sync learning rate: 1.000000e-06 | Stuck:  36
+Epoch: 91/100 | Train loss:   0.055850 | Train Sync MSE:   0.001313 | Train Sync MAE:   0.019700 | Val. loss:   0.062812 | Val. BER (15.0 dB):   0.001106 | Val. BLER (15.0 dB):   0.018000 | Val. Sync Error MSE (15.0 dB):   0.001120 | Val. Sync Error MAE (15.0 dB):   0.020320 | Batch size: 5000 | Learning rate: 3.000000e-05 | Sync learning rate: 1.000000e-06 | Stuck:  37
+Epoch: 92/100 | Train loss:   0.052801 | Train Sync MSE:   0.001146 | Train Sync MAE:   0.019600 | Val. loss:   0.077952 | Val. BER (15.0 dB):   0.001544 | Val. BLER (15.0 dB):   0.023600 | Val. Sync Error MSE (15.0 dB):   0.001338 | Val. Sync Error MAE (15.0 dB):   0.020344 | Batch size: 5000 | Learning rate: 3.000000e-05 | Sync learning rate: 1.000000e-06 | Stuck:  38
+Epoch: 93/100 | Train loss:   0.055770 | Train Sync MSE:   0.001079 | Train Sync MAE:   0.019417 | Val. loss:   0.057677 | Val. BER (15.0 dB):   0.001194 | Val. BLER (15.0 dB):   0.018000 | Val. Sync Error MSE (15.0 dB):   0.001139 | Val. Sync Error MAE (15.0 dB):   0.019764 | Batch size: 5000 | Learning rate: 3.000000e-05 | Sync learning rate: 1.000000e-06 | Stuck:  39
+
+Loss Stuck for 40 epochs, reduce learning rate
+
+Epoch: 94/100 | Train loss:   0.053536 | Train Sync MSE:   0.001484 | Train Sync MAE:   0.019943 | Val. loss:   0.061069 | Val. BER (15.0 dB):   0.000931 | Val. BLER (15.0 dB):   0.018400 | Val. Sync Error MSE (15.0 dB):   0.001037 | Val. Sync Error MAE (15.0 dB):   0.019545 | Batch size: 5000 | Learning rate: 3.000000e-06 | Sync learning rate: 1.000000e-06 | Stuck:   0
+Epoch: 95/100 | Train loss:   0.056975 | Train Sync MSE:   0.001492 | Train Sync MAE:   0.019884 | Val. loss:   0.060220 | Val. BER (15.0 dB):   0.000894 | Val. BLER (15.0 dB):   0.018800 | Val. Sync Error MSE (15.0 dB):   0.001123 | Val. Sync Error MAE (15.0 dB):   0.019769 | Batch size: 5000 | Learning rate: 3.000000e-06 | Sync learning rate: 1.000000e-06 | Stuck:   1
+Epoch: 96/100 | Train loss:   0.056983 | Train Sync MSE:   0.001347 | Train Sync MAE:   0.019925 | Val. loss:   0.061939 | Val. BER (15.0 dB):   0.001256 | Val. BLER (15.0 dB):   0.017600 | Val. Sync Error MSE (15.0 dB):   0.001236 | Val. Sync Error MAE (15.0 dB):   0.020011 | Batch size: 5000 | Learning rate: 3.000000e-06 | Sync learning rate: 1.000000e-06 | Stuck:   2
+Epoch: 97/100 | Train loss:   0.061610 | Train Sync MSE:   0.001248 | Train Sync MAE:   0.020038 | Val. loss:   0.063799 | Val. BER (15.0 dB):   0.001262 | Val. BLER (15.0 dB):   0.018400 | Val. Sync Error MSE (15.0 dB):   0.001489 | Val. Sync Error MAE (15.0 dB):   0.020033 | Batch size: 5000 | Learning rate: 3.000000e-06 | Sync learning rate: 1.000000e-06 | Stuck:   3
+Epoch: 98/100 | Train loss:   0.062995 | Train Sync MSE:   0.001199 | Train Sync MAE:   0.020001 | Val. loss:   0.066954 | Val. BER (15.0 dB):   0.001575 | Val. BLER (15.0 dB):   0.019600 | Val. Sync Error MSE (15.0 dB):   0.002509 | Val. Sync Error MAE (15.0 dB):   0.020315 | Batch size: 5000 | Learning rate: 3.000000e-06 | Sync learning rate: 1.000000e-06 | Stuck:   4
+Epoch: 99/100 | Train loss:   0.055758 | Train Sync MSE:   0.001526 | Train Sync MAE:   0.019839 | Val. loss:   0.064327 | Val. BER (15.0 dB):   0.000969 | Val. BLER (15.0 dB):   0.017600 | Val. Sync Error MSE (15.0 dB):   0.001211 | Val. Sync Error MAE (15.0 dB):   0.020327 | Batch size: 5000 | Learning rate: 3.000000e-06 | Sync learning rate: 1.000000e-06 | Stuck:   5
+Epoch: 100/100 | Train loss:   0.056057 | Train Sync MSE:   0.001351 | Train Sync MAE:   0.020102 | Val. loss:   0.059757 | Val. BER (15.0 dB):   0.001169 | Val. BLER (15.0 dB):   0.017200 | Val. Sync Error MSE (15.0 dB):   0.002481 | Val. Sync Error MAE (15.0 dB):   0.019581 | Batch size: 5000 | Learning rate: 3.000000e-06 | Sync learning rate: 1.000000e-06 | Stuck:   6
+Saving model [epoch 100]
+Starting inference on 2 worker(s) ...
+For SNR = 10.0, sync delay MSE is 0.022124020347871056, sync delay MAE is 0.07499934526397736, floor diff counts are {-3: 130, -2: 1070, -1: 60593, 0: 1879300, 1: 57800, 2: 982, 3: 125}
+For SNR = 10.0, the average BER is 0.022082671875, the average BLER is 0.211763 (2000000 samples across 2 workers)
+For SNR = 12.0, sync delay MSE is 0.0070242287800543835, sync delay MAE is 0.04188979153121851, floor diff counts are {-3: 24, -2: 219, -1: 33421, 0: 1932361, 1: 33763, 2: 191, 3: 21}
+For SNR = 12.0, the average BER is 0.0070083515625, the average BLER is 0.084653 (2000000 samples across 2 workers)
+For SNR = 14.0, sync delay MSE is 0.002215047202035856, sync delay MAE is 0.024371065088633508, floor diff counts are {-3: 1, -2: 44, -1: 18332, 0: 1960965, 1: 20610, 2: 42, 3: 6}
+For SNR = 14.0, the average BER is 0.0019846953125, the average BLER is 0.029174 (2000000 samples across 2 workers)
+For SNR = 16.0, sync delay MSE is 0.000827743605068199, sync delay MAE is 0.01690687361122563, floor diff counts are {-3: 1, -2: 3, -1: 12125, 0: 1973318, 1: 14542, 2: 11}
+For SNR = 16.0, the average BER is 0.000540546875, the average BLER is 0.0094095 (2000000 samples across 2 workers)
+For SNR = 18.0, sync delay MSE is 0.00043480741689599006, sync delay MAE is 0.013856071448865347, floor diff counts are {-2: 3, -1: 9474, 0: 1978172, 1: 12349, 2: 2}
+For SNR = 18.0, the average BER is 0.0001454296875, the average BLER is 0.002963 (2000000 samples across 2 workers)
+For SNR = 20.0, sync delay MSE is 0.00032177256811655446, sync delay MAE is 0.012725680332665565, floor diff counts are {-1: 8530, 0: 1980654, 1: 10816}
+For SNR = 20.0, the average BER is 4.21953125e-05, the average BLER is 0.0009355 (2000000 samples across 2 workers)
+For SNR = 22.0, sync delay MSE is 0.0002879795842600407, sync delay MAE is 0.012460132420374371, floor diff counts are {-1: 8071, 0: 1981900, 1: 10029}
+For SNR = 22.0, the average BER is 1.27265625e-05, the average BLER is 0.0003105 (2000000 samples across 2 workers)
+For SNR = 24.0, sync delay MSE is 0.0002756159017497479, sync delay MAE is 0.012441786194218905, floor diff counts are {-1: 7331, 0: 1983146, 1: 9523}
+For SNR = 24.0, the average BER is 3.2109375e-06, the average BLER is 9.95e-05 (2000000 samples across 2 workers)
+For SNR = 26.0, sync delay MSE is 0.00026977394357060534, sync delay MAE is 0.012492196522067534, floor diff counts are {-1: 6844, 0: 1983423, 1: 9733}
+For SNR = 26.0, the average BER is 1.1328125e-06, the average BLER is 3.2e-05 (2000000 samples across 2 workers)
+The snr_db values for inference are:  [10. 12. 14. 16. 18. 20. 22. 24. 26.]
+The average bit error rate is:  [0.0220827, 0.0070084, 0.0019847, 0.0005405, 0.0001454, 4.22e-05, 1.27e-05, 3.2e-06, 1.1e-06]
+The average block error rate is:  [0.211763, 0.084653, 0.029174, 0.0094095, 0.002963, 0.0009355, 0.0003105, 9.95e-05, 3.2e-05]
+Finished inference!
